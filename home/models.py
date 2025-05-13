@@ -14,6 +14,7 @@ class BaseModel(models.Model):
           abstract = True
 
 
+
 class Home(BaseModel):
      sarlavha = models.CharField(max_length=255)
      slug = models.SlugField(max_length=255, unique=True, blank=True)
