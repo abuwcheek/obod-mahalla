@@ -18,7 +18,7 @@ class BaseModel(models.Model):
 class Home(BaseModel):
      sarlavha = models.CharField(max_length=255)
      slug = models.SlugField(max_length=255, unique=True, blank=True)
-     text = RichTextField()
+     text = models.TextField()
      image = models.ImageField(upload_to='images/', null=True, blank=True)
      xonadon = models.IntegerField(default=0)
      odamlar = models.IntegerField(default=0)
