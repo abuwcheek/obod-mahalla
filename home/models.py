@@ -9,6 +9,8 @@ class BaseModel(models.Model):
      is_active = models.BooleanField(default=True)
      is_deleted = models.BooleanField(default=False)
      is_featured = models.BooleanField(default=False)
+     is_published = models.BooleanField(default=False)
+     
 
      class Meta:
           abstract = True
@@ -20,8 +22,7 @@ class Home(BaseModel):
      slug = models.SlugField(max_length=255, unique=True, blank=True)
      text = models.TextField()
      image = models.ImageField(upload_to='images/', null=True, blank=True)
-     xonadon = models.IntegerField(default=0)
-     odamlar = models.IntegerField(default=0)
+
 
 
      def __str__(self):
@@ -39,9 +40,23 @@ class ContactUs(BaseModel):
      viloyat = models.CharField(max_length=255)
      tuman = models.CharField(max_length=255)
      manzil = models.CharField(max_length=255)
+     xonadon = models.IntegerField(default=0)
+     odamlar = models.IntegerField(default=0)
      telefon = models.CharField(max_length=255)
      email = models.EmailField(max_length=255)
      facebook = models.CharField(max_length=255)
      instagram = models.CharField(max_length=255)
      telegram = models.CharField(max_length=255)
      twitter = models.CharField(max_length=255)
+     image = models.ImageField(upload_to='images/', null=True, blank=True)
+     name = models.CharField(max_length=255)
+
+
+
+class Aloqa(BaseModel):
+     full_name = models.CharField(max_length=255)
+     email = models.EmailField(max_length=255)
+     message = models.TextField()
+
+     def __str__(self):
+          return self.full_name
