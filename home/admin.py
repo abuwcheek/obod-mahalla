@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Home, ContactUs, Aloqa
+from .models import Home, ContactUs
 
 
 @admin.register(Home)
@@ -22,10 +22,3 @@ class ContactUsAdmin(admin.ModelAdmin):
      list_per_page = 10
 
 
-@admin.register(Aloqa)
-class AloqaAdmin(admin.ModelAdmin):
-     list_display = ('full_name', 'email', 'message', 'created_at', 'updated_at', 'is_active', 'is_deleted')
-     search_fields = ('full_name',)
-     list_filter = ('is_active',)
-     list_editable = ('is_active', 'is_deleted')
-     list_per_page = 10

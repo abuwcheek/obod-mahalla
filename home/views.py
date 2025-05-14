@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from .models import Home, ContactUs
+from pyexpat.errors import messages
+from django.shortcuts import redirect, render
+from django.views import View
+from .models import  Home, ContactUs
 
 
 
@@ -18,3 +20,4 @@ def home(request):
           'solo_news': solo_news,
      }
      return render(request, 'index.html', context)
+

@@ -51,12 +51,3 @@ class ContactUs(BaseModel):
      image = models.ImageField(upload_to='images/', null=True, blank=True)
      name = models.CharField(max_length=255)
 
-
-
-class Aloqa(BaseModel):
-     full_name = models.CharField(max_length=255)
-     email = models.EmailField(max_length=255)
-     message = models.TextField()
-
-     def __str__(self):
-          return self.full_name
