@@ -7,7 +7,7 @@ from .models import  Home, ContactUs
 
 
 def home(request):
-     first_news = Home.objects.filter(is_active=True).order_by('?')[1]
+     first_news = Home.objects.filter(is_active=True).first()
      new_news = Home.objects.filter(is_active=True).order_by('-created_at')[:3]
      featured_news = Home.objects.filter(is_active=True, is_featured=True)[:2]
      all_news = Home.objects.filter(is_active=True).all()

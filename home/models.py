@@ -1,5 +1,5 @@
 from django.db import models
-from djrichtextfield.models import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.text import slugify
 
 
@@ -20,7 +20,7 @@ class BaseModel(models.Model):
 class Home(BaseModel):
      sarlavha = models.CharField(max_length=255)
      slug = models.SlugField(max_length=255, unique=True, blank=True)
-     text = models.TextField()
+     text = RichTextUploadingField()  # now rich-text editor with uploads in admin and forms
      image = models.ImageField(upload_to='images/', null=True, blank=True)
 
 
@@ -43,11 +43,11 @@ class ContactUs(BaseModel):
      xonadon = models.IntegerField(default=0)
      odamlar = models.IntegerField(default=0)
      telefon = models.CharField(max_length=255)
-     email = models.EmailField(max_length=255)
-     facebook = models.CharField(max_length=255)
-     instagram = models.CharField(max_length=255)
-     telegram = models.CharField(max_length=255)
-     twitter = models.CharField(max_length=255)
+     email = models.EmailField(max_length=255, null=True, blank=True)
+     facebook = models.CharField(max_length=255, null=True, blank=True)
+     instagram = models.CharField(max_length=255, null=True, blank=True)
+     telegram = models.CharField(max_length=255, null=True, blank=True)
+     twitter = models.CharField(max_length=255, null=True, blank=True)
      image = models.ImageField(upload_to='images/', null=True, blank=True)
      name = models.CharField(max_length=255)
 

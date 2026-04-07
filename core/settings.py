@@ -31,7 +31,8 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'home',
-    'djrichtextfield',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -76,15 +77,13 @@ DATABASES = {
 }
 
 
-DJRICHTEXTFIELD_CONFIG = {
-    'js': ['//cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js'],
-    'init_template': 'djrichtextfield/init/tinymce.js',
-    'settings': {
-        'menubar': False,
-        'plugins': 'link image',
-        'toolbar': 'bold italic | link image | removeformat',
-        'width': 700
-    }
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 400,
+        'width': 'auto',
+    },
 }
 
 # Password validation

@@ -16,7 +16,7 @@
                     <div class="text-container">
                         <div class="section-title"></div>
                         <h2>{{ first_news.sarlavha }}</h2>
-                        <p>{{ first_news.text | slice:"990" }}</p>
+                        <p>{{ first_news.text|striptags|slice:"990" }}</p>
                     </div> <!-- end of text-container -->
                 </div> <!-- end of col -->
                 <div class="col-lg-7">
@@ -97,11 +97,15 @@
                     <!-- Card -->
                     <div class="card">
                         <div class="card-image">
-                            <img class="img-fluid" src="{{ new.image.url }}" alt="alternative">
+                            {% if new.image %}
+                                <img class="img-fluid" src="{{ new.image.url }}" alt="alternative">
+                            {% else %}
+                                <img class="img-fluid" src="{% static 'images/project-1.jpg' %}" alt="alternative">
+                            {% endif %}
                         </div>
                         <div class="card-body">
                             <h3 class="card-title">{{ new.sarlavha }}</h3>
-                            <p>{{ new.text | slice:"299" }}</p>
+                            <p>{{ new.text|striptags|slice:"299" }}</p>
                         </div>
                     </div>
                     <!-- end of card -->
@@ -165,7 +169,11 @@
                     <div class="element-item development">
                         <a class="popup-with-move-anim" href="#project-{{ forloop.counter }}">
                             <div class="element-item-overlay"><span>{{ all.sarlavha }}</span></div>
-                            <img style="width: 300px; height: 270px;" src="{{ all.image.url }}" alt="alternative">
+                            {% if all.image %}
+                                <img style="width: 300px; height: 270px;" src="{{ all.image.url }}" alt="alternative">
+                            {% else %}
+                                <img style="width: 300px; height: 270px;" src="{% static 'images/project-2.jpg' %}" alt="alternative">
+                            {% endif %}
                         </a>
                     </div>
                     {% endfor %}
@@ -183,12 +191,16 @@
     <div class="row">
         <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
         <div class="col-lg-8">
-            <img class="img-fluid" src="{{ all.image.url }}" alt="alternative">
+            {% if all.image %}
+                <img class="img-fluid" src="{{ all.image.url }}" alt="alternative">
+            {% else %}
+                <img class="img-fluid" src="{% static 'images/project-3.jpg' %}" alt="alternative">
+            {% endif %}
         </div> <!-- end of col -->
         <div class="col-lg-4">
             <h3>{{ all.sarlavha }}</h3>
             <hr class="line-heading">
-            <p>{{ all.text }}</p>
+            <p>{{ all.text|striptags }}</p>
             <a class="btn-outline-reg mfp-close as-button" href="#projects">BACK</a> 
         </div> <!-- end of col -->
     </div> <!-- end of row -->
@@ -210,7 +222,7 @@
                     <div class="text-container">
                         <div class="section-title"></div>
                         <h2>{{ about.sarlavha }} </h2>
-                        <p>{{ about.text | slice:"299" }}</p>
+                        <p>{{ about.text|striptags|slice:"299" }}</p>
                         <ul class="list-unstyled li-space-lg">
                         </ul>
 
