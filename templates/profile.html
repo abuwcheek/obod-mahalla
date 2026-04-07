@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock title %}
+
+{% block content %}
+<style>
+     .profile-hero {
+          background: linear-gradient(135deg, #0f5c6f, #0e3f4d);
+          color: #e9f7fb;
+          padding: 4rem 0;
+          text-align: center;
+     }
+     .profile-card {
+          margin-top: -5rem;
+          background: #fff;
+          border-radius: 1rem;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+          padding: 2.5rem;
+     }
+     .avatar {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          overflow: hidden;
+          border: 4px solid #14bf98;
+          box-shadow: 0 10px 20px rgba(20,191,152,0.35);
+          margin: 0 auto 1rem;
+     }
+     .avatar img { width: 100%; height: 100%; object-fit: cover; }
+     .info-row {
+          display: grid;
+          grid-template-columns: 150px 1fr;
+          gap: 0.5rem 1rem;
+          padding: 0.75rem 0;
+          border-bottom: 1px solid #eef2f5;
+     }
+     .info-label { font-weight: 700; color: #5a6875; text-transform: uppercase; font-size: 0.85rem; }
+     .info-value { color: #27323f; font-weight: 600; }
+     .badge-role {
+          display: inline-block;
+          padding: 0.25rem 0.75rem;
+          border-radius: 999px;
+          background: #e6f7ef;
+          color: #0f5132;
+          font-weight: 700;
+          border: 1px solid #b7e8d2;
+          font-size: 0.85rem;
+     }
+
+     .logout-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          background: #d6334c;
+          color: #fff !important;
+          padding: 0.75rem 1.6rem;
+          border-radius: 0.55rem;
+          font-weight: 700;
+          text-decoration: none !important;
+          box-shadow: 0 10px 24px rgba(214,51,76,0.35);
+          transition: transform 0.18s ease, box-shadow 0.18s ease;
+     }
+     .logout-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 30px rgba(214,51,76,0.45);
+     }
+</style>
+
+<div class="profile-hero">
+     <div class="container">
+          <h1 style="color: white; padding: 30px;">Salom, {{ profile.ism }}!</h1>
+          <!-- <p style="color: brown;">Shaxsiy ma'lumotlaringiz</p> -->
+     </div>
+</div>
+
+<div class="container">
+     <div class="row justify-content-center">
+          <div class="col-lg-8">
+               <div class="profile-card">
+                    <div class="avatar">
+                         {% if profile.rasm %}
+                              <img src="{{ profile.rasm.url }}" alt="{{ profile.ism }}">
+                         {% else %}
+                              <img src="{% static 'images/profile-default.svg' %}" alt="Default avatar">
+                         {% endif %}
+                    </div>
+                    <h2 class="text-center" style="color:#0f3f4c;">{{ profile.ism }} {{ profile.familya }}</h2>
+                    {% if profile.daraja %}
+                    <p class="text-center"><span class="badge-role">{{ profile.daraja|title }}</span></p>
+                    {% endif %}
+
+                    <div class="info-row">
+                         <div class="info-label">Email</div>
+                         <div class="info-value">{{ profile.email }}</div>
+                    </div>
+                    <div class="info-row">
+                         <div class="info-label">Telefon</div>
+                         <div class="info-value">{{ profile.nomer }}</div>
+                    </div>
+                    <div class="info-row">
+                         <div class="info-label">Jinsi</div>
+                         <div class="info-value">{{ profile.get_jinsi_display }}</div>
+                    </div>
+                    {% if profile.created_at %}
+                    <div class="info-row">
+                         <div class="info-label">Ro'yxatdan o'tgan</div>
+                         <div class="info-value">{{ profile.created_at|date:"d.m.Y H:i" }}</div>
+                    </div>
+                    {% endif %}
+
+                    <div class="text-center" style="margin-top: 1.5rem;">
+                         <a href="{% url 'logout' %}" class="logout-btn">
+                              <i class="fas fa-sign-out-alt"></i> Logout
+                         </a>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+{% endblock content %}

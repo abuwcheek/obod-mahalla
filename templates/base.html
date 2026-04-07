@@ -88,31 +88,92 @@
                </ul>
                     <style>
                     .sign-in-link {
-                         color: white;               /* Asl rangi */
-                         text-decoration: none;      /* Tagidagi chiziqni olib tashlash */
+                         color: white;
+                         text-decoration: none;
                          font-weight: 600;
                          font-size: 16px;
-                         text-transform: uppercase;  /* Bosh harflarda (xohlasangiz olib tashlang) */
-                         transition: all 0.3s ease;  /* Hover effekti yumshoq bo'lishi uchun */
+                         text-transform: uppercase;
+                         transition: all 0.3s ease;
                          display: inline-block;
                          padding: 5px 10px;
                     }
 
                     .sign-in-link:hover {
-                         color: #1de9b6;             /* Ustiga borganda chiqadigan rang (Home rangi bilan bir xil) */
-                         transform: translateY(-2px); /* Biroz yuqoriga ko'tarilish effekti */
-                         text-shadow: 0px 0px 8px rgba(29, 233, 182, 0.5); /* Mayin nur sochishi */
+                         color: #1de9b6;
+                         transform: translateY(-2px);
+                         text-shadow: 0px 0px 8px rgba(29, 233, 182, 0.5);
                     }
+
+                    .profile-badge {
+                         width: 44px;
+                         height: 44px;
+                         border-radius: 50%;
+                         background: #14bf98;
+                         display: inline-flex;
+                         align-items: center;
+                         justify-content: center;
+                         color: #fff;
+                         box-shadow: 0 8px 18px rgba(20, 191, 152, 0.35);
+                         transition: transform 0.2s ease, box-shadow 0.2s ease;
+                    }
+                    .profile-badge:hover {
+                         transform: translateY(-2px) scale(1.02);
+                         box-shadow: 0 10px 22px rgba(20, 191, 152, 0.45);
+                    }
+
+                    .flash-wrapper {
+                         margin-top: 1rem;
+                    }
+                    .flash {
+                         display: flex;
+                         align-items: center;
+                         gap: 0.5rem;
+                         padding: 0.85rem 1rem;
+                         border-radius: 0.5rem;
+                         margin-bottom: 0.6rem;
+                         box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+                         color: #0f2a30;
+                         font-weight: 600;
+                    }
+                    .flash .flash-icon {
+                         width: 1.25rem;
+                         text-align: center;
+                    }
+                    .flash-success { background: #e6f7ef; border: 1px solid #b7e8d2; color: #0f5132; }
+                    .flash-error, .flash-danger { background: #fceaea; border: 1px solid #f5c2c7; color: #842029; }
+                    .flash-warning { background: #fff4e5; border: 1px solid #ffd8a8; color: #8a4b00; }
+                    .flash-info { background: #e7f1ff; border: 1px solid #cfe0ff; color: #0b3d91; }
                     </style>
 
                     <span class="nav-item">
-                    <a href="/login" class="sign-in-link">
-                         Sign In
-                    </a>
+                    {% if request.session.is_registered %}
+                         <a href="{% url 'profile' %}" class="profile-badge" title="{{ request.session.registered_name|default:'Profile' }}">
+                              <i class="fas fa-user"></i>
+                         </a>
+                    {% else %}
+                         <a href="{% url 'register' %}" class="sign-in-link">Sign Up</a>
+                    {% endif %}
                     </span>
           </div>
      </nav> <!-- end of navbar -->
      <!-- end of navbar -->
+
+     {% if messages %}
+     <div class="container" style="margin-top: 100px;">
+          <div class="flash-wrapper">
+               {% for message in messages %}
+               <div class="flash flash-{{ message.tags }}">
+                    <span class="flash-icon">
+                         {% if "success" in message.tags %}<i class="fas fa-check-circle"></i>{% endif %}
+                         {% if "error" in message.tags or "warning" in message.tags %}<i class="fas fa-exclamation-triangle"></i>{% endif %}
+                         {% if "info" in message.tags %}<i class="fas fa-info-circle"></i>{% endif %}
+                    </span>
+                    <span>{{ message }}</span>
+               </div>
+               {% endfor %}
+          </div>
+     </div>
+     {% endif %}
 
 
      <!-- Header -->

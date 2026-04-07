@@ -17,6 +17,66 @@ class BaseModel(models.Model):
 
 
 
+class UserRegistration(BaseModel, models.Model):
+    # Jins uchun tanlovlar
+    GENDER_CHOICES = [
+        ('erkak', 'Erkak'),
+        ('ayol', 'Ayol'),
+    ]
+
+    # Daraja uchun tanlovlar
+    LEVEL_CHOICES = [
+        ('fuqaro', 'Oddiy fuqaro'),
+        ('rais', 'Rais'),
+        ('muovin', 'Muovin'),
+    ]
+
+    ism = models.CharField(max_length=50)
+    familya = models.CharField(max_length=50)
+    email = models.EmailField(unique=True)
+    nomer = models.CharField(max_length=20)
+    otp_code = models.CharField(max_length=6, null=True, blank=True)
+    otp_sent_at = models.DateTimeField(null=True, blank=True)
+    
+    # Rasm uchun (media papkasiga yuklanadi)
+    rasm = models.ImageField(upload_to='user_images/', null=True, blank=True)
+    
+    # Tanlov maydonlari (Choices)
+    jinsi = models.CharField(
+        max_length=10, 
+        choices=GENDER_CHOICES, 
+        default='jinsi'  # Placeholder tanlovni default qilib qo'yamiz
+    )
+    
+    daraja = models.CharField(
+        max_length=20, 
+        choices=LEVEL_CHOICES, 
+        default='fuqaro'
+    )
+
+    def __str__(self):
+        return f"{self.ism} {self.familya} - {self.daraja}"
+
+    class Meta:
+        verbose_name = "Ro'yxatdan o'tgan foydalanuvchi"
+        verbose_name_plural = "Ro'yxatdan o'tgan foydalanuvchilar"
+
+
+class UserOTP(models.Model):
+    user = models.ForeignKey(UserRegistration, on_delete=models.CASCADE, related_name='otps')
+    code = models.CharField(max_length=5)
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "SMS kod"
+        verbose_name_plural = "SMS kodlar"
+
+    def __str__(self):
+        return f"{self.user.email} - {self.code}"
+
+
 class Home(BaseModel):
      sarlavha = models.CharField(max_length=255)
      slug = models.SlugField(max_length=255, unique=True, blank=True)

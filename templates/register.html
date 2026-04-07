@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Sign Up
+{% endblock title %}
+
+{% block content %}
+<div id="register" class="form-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="text-container">
+                    <div class="section-title">Ro'yxatdan o'tish</div>
+                    <h2>Mahalla platformasiga qo'shiling</h2>
+                    <p>Kontaktlaringizni yuboring. Darajani (rolni) keyinchalik admin tasdiqlaydi.</p>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <form method="post" enctype="multipart/form-data" class="register-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control-input" id="ism" name="ism" required>
+                        <label class="label-control" for="ism">Ism</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control-input" id="familya" name="familya" required>
+                        <label class="label-control" for="familya">Familya</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control-input" id="email" name="email" required>
+                        <label class="label-control" for="email">Email</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control-input" id="nomer" name="nomer" required>
+                        <label class="label-control" for="nomer">Telefon raqam</label>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control-select" id="jinsi" name="jinsi" required>
+                            <option value="" disabled selected>Jinsi tanlang</option>
+                            <option value="erkak">Erkak</option>
+                            <option value="ayol">Ayol</option>
+                        </select>
+                        <label class="label-control" for="jinsi">Jinsi</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-control d-block mb-2" for="rasm"></label>
+                        <input type="file" class="form-control-input" id="rasm" name="rasm" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="form-control-submit-button">Ro'yxatdan o'tish</button>
+                    </div>
+                </form>
+                <div style="margin-top:2rem; padding:1.25rem; border:1px solid #e3e6ea; border-radius:0.75rem;">
+                    <h4 style="margin-bottom:0.5rem;">Oldingi hisobingiz bormi?</h4>
+                    <p style="margin-bottom:0.75rem;">Emailga kod yuborib kirishingiz mumkin.</p>
+                    <a class="btn btn-outline-reg" href="{% url 'login' %}">Oldingi hisobga kirish</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
