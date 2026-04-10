@@ -25,7 +25,7 @@ class ContactUsAdmin(admin.ModelAdmin):
 
 @admin.register(UserRegistration)
 class UserRegistrationAdmin(admin.ModelAdmin):
-     list_display = ('ism', 'familya', 'email', 'nomer', 'jinsi', 'daraja', 'is_active', 'is_deleted', 'created_at')
+     list_display = ('id', 'ism', 'familya', 'email', 'nomer', 'jinsi', 'daraja', 'is_active', 'is_deleted', 'created_at')
      search_fields = ('ism', 'familya', 'email', 'nomer')
      list_filter = ('jinsi', 'daraja', 'is_active', 'is_deleted')
      list_editable = ('is_active', 'is_deleted')

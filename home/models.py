@@ -37,6 +37,7 @@ class UserRegistration(BaseModel, models.Model):
     nomer = models.CharField(max_length=20)
     otp_code = models.CharField(max_length=6, null=True, blank=True)
     otp_sent_at = models.DateTimeField(null=True, blank=True)
+    password = models.CharField(max_length=128, null=True, blank=True)
     
     # Rasm uchun (media papkasiga yuklanadi)
     rasm = models.ImageField(upload_to='user_images/', null=True, blank=True)

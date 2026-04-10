@@ -22,37 +22,27 @@
 
 <div class="container">
      <div class="auth-card">
-<h2 class="text-center" style="color:#0f3f4c;">Kirish (Email kod)</h2>
-<p class="text-center">Telefon raqamingizni kiriting. 5 xonali kod bog‘langan emailingizga yuboriladi.</p>
+          <h2 class="text-center" style="color:#0f3f4c;">Kirish</h2>
+          <p class="text-center">Email emas, ism va familyani qanday yozgan bo‘lsangiz shunday kiriting, keyin parolni kiriting.</p>
 
-          {% if not show_code_form %}
-               <form method="post" style="margin-top:1.5rem;">
-                    {% csrf_token %}
-                    <div class="form-group">
-                         <label class="step-label" for="email">Email</label>
-                         <input type="email" class="form-control-input" id="email" name="email" placeholder="email@example.com" required>
-                    </div>
-                    <div class="form-group">
-                         <button type="submit" class="btn-solid-reg" style="width:100%;">Kodni yuborish</button>
-                    </div>
-               </form>
-          {% endif %}
-
-          {% if show_code_form %}
-          <hr>
-          {% if show_code_form %}
-               <form method="post" style="margin-top:1rem;">
-                    {% csrf_token %}
-                    <div class="form-group">
-                         <label class="step-label" for="code">Emailga kelgan kodni kiriting</label>
-                         <input type="text" class="form-control-input" id="code" name="code" maxlength="5" minlength="5" required>
-                    </div>
-                    <div class="form-group">
-                         <button type="submit" class="btn-solid-reg" style="width:100%;">Kirish</button>
-                    </div>
-               </form>
-          {% endif %}
-          {% endif %}
+          <form method="post" style="margin-top:1.5rem;">
+               {% csrf_token %}
+               <div class="form-group">
+                    <label class="step-label" for="ism">Ism</label>
+                    <input type="text" class="form-control-input" id="ism" name="ism" required>
+               </div>
+               <div class="form-group">
+                    <label class="step-label" for="familya">Familya</label>
+                    <input type="text" class="form-control-input" id="familya" name="familya" required>
+               </div>
+               <div class="form-group">
+                    <label class="step-label" for="password">Parol</label>
+                    <input type="password" class="form-control-input" id="password" name="password" required>
+               </div>
+               <div class="form-group">
+                    <button type="submit" class="btn-solid-reg" style="width:100%;">Kirish</button>
+               </div>
+          </form>
      </div>
 </div>
 {% endblock content %}
