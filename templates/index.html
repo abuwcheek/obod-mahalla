@@ -1,100 +1,90 @@
 {% extends "base.html" %}
 {% load static %}
 
-
 {% block title %}
-	home page
+    home page
 {% endblock title %}
 
-
 {% block content %}
-    <!-- Intro -->
     <div id="intro" class="basic-1">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5">
                     <div class="text-container">
                         <div class="section-title"></div>
-                        <h2>{{ first_news.sarlavha }}</h2>
-                        <p>{{ first_news.text|striptags|slice:"990" }}</p>
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
+                        <h2>{{ old_news.sarlavha }}</h2>
+                        <p>{{ old_news.text|striptags|slice:"990" }}</p>
+                    </div> 
+                </div> 
                 <div class="col-lg-7">
                     <div class="image-container">
-                        <img class="img-fluid" src="{{ first_news.image.url }}" alt="alternative">
-                    </div> <!-- end of image-container -->
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of basic-1 -->
-    <!-- end of intro -->
+                        <img class="img-fluid" src="{{ old_news.image.url }}" alt="alternative">
+                    </div> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
 
 
-    <!-- Description -->
-    <div class="cards-1">
+    <div id="announcements" class="cards-1" style="padding-top: 5rem; background-color: #fbfbfb;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    
-                    <!-- Card -->
-                    <div class="card">
-                        <span class="fa-stack">
-                            <span class="hexagon"></span>
-                            <i class="fas fa-binoculars fa-stack-1x"></i>
-                        </span>
-                        <div class="card-body">
-                            <h4 class="card-title">Environment Analysis</h4>
-                            <p>The starting point of any success story is knowing your current position in the business environment</p>
+                    <h2 style="text-align: center; margin-bottom: 3rem;">So'nggi E'lonlar</h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for item in elonlar|slice:":3" %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card" style="box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; height: 100%; border: none;">
+                        
+                        <div class="image-container" style="height: 200px; background-color: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            {% if item.rasm %}
+                                <img src="{{ item.rasm.url }}" alt="{{ item.sarlavha }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            {% else %}
+                                <span style="color: #999; font-style: italic;">Rasm mavjud emas</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-body" style="padding: 1.5rem; display: flex; flex-direction: column;">
+                            <div style="color: #14bf98; font-weight: bold; margin-bottom: 0.5rem; font-size: 0.8rem;">E'LON</div>
+                            <h4 class="card-title" style="margin-bottom: 1rem;">{{ item.sarlavha }}</h4>
+                            <p style="font-size: 0.9rem; color: #555; flex-grow: 1;">{{ item.matn|striptags|slice:":120" }}...</p>
+                            
+                            <hr style="margin: 1rem 0;">
+                            
+                            <div style="font-size: 0.8rem; color: #888;">
+                                <div style="margin-bottom: 0.2rem;">
+                                    <i class="fas fa-user"></i> <strong>Muallif:</strong> {{ item.muallif.ism }} {{ item.muallif.familya }} - {{ item.muallif.daraja }}
+                                </div>
+                                <div>
+                                    <i class="fas fa-calendar-alt"></i> <strong>E'lon qilingan Sana:</strong> {{ item.created_at|date:"d.m.Y, H:i" }}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- end of card -->
-
-                    <!-- Card -->
-                    <div class="card">
-                        <span class="fa-stack">
-                            <span class="hexagon"></span>
-                            <i class="fas fa-list-alt fa-stack-1x"></i>
-                        </span>
-                        <div class="card-body">
-                            <h4 class="card-title">Development Planning</h4>
-                            <p>After completing the environmental analysis the next stage is to design and  plan your development strategy</p>
-                        </div>
+                </div>
+                {% empty %}
+                    <div class="col-lg-12">
+                        <p style="text-align: center; color: #888;">Hozircha e'lonlar mavjud emas.</p>
                     </div>
-                    <!-- end of card -->
-
-                    <!-- Card -->
-                    <div class="card">
-                        <span class="fa-stack">
-                            <span class="hexagon"></span>
-                            <i class="fas fa-chart-pie fa-stack-1x"></i>
-                        </span>
-                        <div class="card-body">
-                            <h4 class="card-title">Execution & Evaluation</h4>
-                            <p>In this phase you will focus on executing the actions plan and evaluating the results after each marketing campaign</p>
-                        </div>
-                    </div>
-                    <!-- end of card -->
-
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of cards-1 -->
-    <!-- end of description -->
+                {% endfor %}
+            </div>
+        </div> 
+    </div>
 
 
-    <!-- Services -->
     <div id="services" class="cards-2">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title"></div>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
+                </div> 
+            </div> 
             <div class="row">
                 <div class="col-lg-12">
-                    
                     {% for new in new_news %}
-                    <!-- Card -->
                     <div class="card">
                         <div class="card-image">
                             {% if new.image %}
@@ -108,107 +98,140 @@
                             <p>{{ new.text|striptags|slice:"299" }}</p>
                         </div>
                     </div>
-                    <!-- end of card -->
                     {% endfor %}
-
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of cards-2 -->
-    <!-- end of services -->
+                </div> 
+            </div> 
+        </div> 
+    </div> 
     
 
-    <!-- Details 1 -->
-<div id="details" class="accordion">
-		<div class="area-1">
-		</div><!-- end of area-1 on same line and no space between comments to eliminate margin white space --><div class="area-2">
-            {% for feanews in featured_news %}
-            {% if forloop.counter == 1 %}
-            <!-- Accordion -->
-            <div class="accordion-container" id="accordionOne">
-                <h2></h2>
-                <div class="item">
-                    <div id="headingOne">
-                        <span data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" role="button">
-                            <span class="circle-numbering"></span><span class="accordion-title">{{ feanews.sarlavha }}</span>
-                        </span>
-                    </div>
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionOne">
-                        <div class="accordion-body">
-                            {{ feanews.text  }}
-                        </div>
-                    </div>
-                </div> <!-- end of item -->
-            
-            </div> <!-- end of accordion-container -->
-            <!-- end of accordion -->
-            {% endif %}
-            {% endfor %}
-		</div> <!-- end of area-2 -->
-</div> <!-- end of accordion -->
-    <!-- end of details 1 -->
 
-
-<!-- Projects -->
-<div id="projects" class="filter">
+<div id="polls" class="basic-2" style="padding: 5rem 0; background: #fff;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="section-title"></div>
-                <h2>Obod Mahalla</h2>
-            </div> <!-- end of col -->
-        </div> <!-- end of row -->
+                <h2 style="text-align: center; margin-bottom: 3rem;">Aktiv So'rovnomalar</h2>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-lg-12">
-                <!-- Filter -->
-                <div class="button-group filters-button-group">
-                    <a class="button is-checked" data-filter="*"><span>SHOW ALL</span></a>
-                </div> <!-- end of button group -->
-                <div class="grid">
-                    {% for all in all_news %}
-                    <div class="element-item development">
-                        <a class="popup-with-move-anim" href="#project-{{ forloop.counter }}">
-                            <div class="element-item-overlay"><span>{{ all.sarlavha }}</span></div>
-                            {% if all.image %}
-                                <img style="width: 300px; height: 270px;" src="{{ all.image.url }}" alt="alternative">
-                            {% else %}
-                                <img style="width: 300px; height: 270px;" src="{% static 'images/project-2.jpg' %}" alt="alternative">
-                            {% endif %}
-                        </a>
+            {% for poll in active_polls %}
+            <div class="col-lg-6">
+                <div class="poll-container" style="background: #f1f4f7; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border-left: 5px solid #14bf98; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 0.5rem;">
+                        <i class="fas fa-user-edit"></i> Muallif: {{ poll.muallif }}
+                    </p>
+                    <h4 style="margin-bottom: 1.5rem; line-height: 1.4;">{{ poll.savol }}</h4>
+
+                    {% if not poll.user_voted %}
+                        <form action="{% url 'vote' poll.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" name="choice" value="A" class="btn-solid-reg" style="background: #14bf98; border: none; flex: 1; margin-right: 10px; border-radius: 5px; transition: 0.3s;">A Varianti</button>
+                                <button type="submit" name="choice" value="B" class="btn-solid-reg" style="background: #eb564a; border: none; flex: 1; border-radius: 5px; transition: 0.3s;">B Varianti</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="results">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span style="font-size: 0.9rem;">
+                                        A Varianti {% if poll.user_choice == 'A' %}<b style="color:#14bf98;">(Sizning tanlovingiz)</b>{% endif %}
+                                    </span>
+                                    <span style="font-weight: bold;">{{ poll.a_percent }}% ({{ poll.a_count }} ta)</span>
+                                </div>
+                                <div class="progress" style="height: 12px; border-radius: 6px; background-color: #ddd;">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ poll.a_percent }}%; background: #14bf98;" aria-valuenow="{{ poll.a_percent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span style="font-size: 0.9rem;">
+                                        B Varianti {% if poll.user_choice == 'B' %}<b style="color:#eb564a;">(Sizning tanlovingiz)</b>{% endif %}
+                                    </span>
+                                    <span style="font-weight: bold;">{{ poll.b_percent }}% ({{ poll.b_count }} ta)</span>
+                                </div>
+                                <div class="progress" style="height: 12px; border-radius: 6px; background-color: #ddd;">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ poll.b_percent }}%; background: #eb564a;" aria-valuenow="{{ poll.b_percent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+
+                            <div style="background: #fff; padding: 5px 15px; border-radius: 20px; display: inline-block; font-size: 0.85rem; border: 1px solid #14bf98; color: #14bf98;">
+                                <i class="fas fa-check-circle"></i> Ovozingiz qabul qilingan
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div style="margin-top: 1.5rem; font-weight: bold; text-align: right; color: #555; border-top: 1px solid #ddd; padding-top: 0.8rem;">
+                        <i class="fas fa-users"></i> Jami ovozlar: {{ poll.total_votes }} ta
                     </div>
-                    {% endfor %}
-                </div> <!-- end of grid -->
-                <!-- end of filter -->
-            </div> <!-- end of col -->
-        </div> <!-- end of row -->
-    </div> <!-- end of container -->
-</div> <!-- end of filter -->
-<!-- end of projects -->
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center" style="padding: 3rem; color: #888;">
+                <i class="fas fa-poll-h fa-3x mb-3"></i>
+                <p>Hozircha faol so'rovnomalar mavjud emas.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
-<!-- Project Lightboxes -->
-{% for all in all_news %}
-<div id="project-{{ forloop.counter }}" class="lightbox-basic zoom-anim-dialog mfp-hide">
-    <div class="row">
-        <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
-        <div class="col-lg-8">
-            {% if all.image %}
-                <img class="img-fluid" src="{{ all.image.url }}" alt="alternative">
-            {% else %}
-                <img class="img-fluid" src="{% static 'images/project-3.jpg' %}" alt="alternative">
-            {% endif %}
-        </div> <!-- end of col -->
-        <div class="col-lg-4">
-            <h3>{{ all.sarlavha }}</h3>
-            <hr class="line-heading">
-            <p>{{ all.text|striptags }}</p>
-            <a class="btn-outline-reg mfp-close as-button" href="#projects">BACK</a> 
-        </div> <!-- end of col -->
-    </div> <!-- end of row -->
-</div> <!-- end of lightbox-basic -->
-{% endfor %}
-<!-- end of lightbox -->
 
-    <!-- About -->
+
+    <div id="projects" class="filter">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title"></div>
+                    <h2>Obod Mahalla</h2>
+                </div> 
+            </div> 
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="button-group filters-button-group">
+                        <a class="button is-checked" data-filter="*"><span>SHOW ALL</span></a>
+                    </div> 
+                    <div class="grid">
+                        {% for all in all_news %}
+                        <div class="element-item development">
+                            <a class="popup-with-move-anim" href="#project-{{ forloop.counter }}">
+                                <div class="element-item-overlay"><span>{{ all.sarlavha }}</span></div>
+                                {% if all.image %}
+                                    <img style="width: 300px; height: 270px;" src="{{ all.image.url }}" alt="alternative">
+                                {% else %}
+                                    <img style="width: 300px; height: 270px;" src="{% static 'images/project-2.jpg' %}" alt="alternative">
+                                {% endif %}
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
+
+    {% for all in all_news %}
+    <div id="project-{{ forloop.counter }}" class="lightbox-basic zoom-anim-dialog mfp-hide">
+        <div class="row">
+            <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
+            <div class="col-lg-8">
+                {% if all.image %}
+                    <img class="img-fluid" src="{{ all.image.url }}" alt="alternative">
+                {% else %}
+                    <img class="img-fluid" src="{% static 'images/project-3.jpg' %}" alt="alternative">
+                {% endif %}
+            </div> 
+            <div class="col-lg-4">
+                <h3>{{ all.sarlavha }}</h3>
+                <hr class="line-heading">
+                <p>{{ all.text|striptags }}</p>
+                <a class="btn-outline-reg mfp-close as-button" href="#projects">BACK</a> 
+            </div> 
+        </div> 
+    </div> 
+    {% endfor %}
+
     <div id="about" class="counter">
         <div class="container">
             <div class="row">
@@ -216,39 +239,32 @@
                 <div class="col-lg-5 col-xl-6">
                     <div class="image-container">
                         <img class="img-fluid" src="{{ about.image.url }}" alt="alternative">
-                    </div> <!-- end of image-container -->
-                </div> <!-- end of col -->
+                    </div> 
+                </div> 
                 <div class="col-lg-7 col-xl-6">
                     <div class="text-container">
                         <div class="section-title"></div>
                         <h2>{{ about.sarlavha }} </h2>
                         <p>{{ about.text|striptags|slice:"299" }}</p>
-                        <ul class="list-unstyled li-space-lg">
-                        </ul>
-
-                        <!-- Counter -->
+                        
                         <div id="counter">
                             <div class="cell">
                                 <div class="counter-info">Xonadonlar soni </div>
                                 <div class="counter-value number-count" data-count="{{ contact_us.xonadon }}">{{ contact_us.xonadon }}</div>
                             </div>
                             <div class="cell" style="margin-left: 100px;">
-                                <div class="counter-info" style="margin-top: 20px;">Odamlar soni </div> <!-- Matn pastga tushdi -->
+                                <div class="counter-info" style="margin-top: 20px;">Odamlar soni </div>
                                 <div class="counter-value number-count" data-count="{{ contact_us.odamlar }}">{{ contact_us.odamlar }}</div>
                             </div>
                         </div>
-                        <!-- end of counter -->
-
-                    </div> <!-- end of text-container -->      
-                </div> <!-- end of col -->
+                    </div>      
+                </div> 
                 {% endfor %}
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of counter -->
-    <!-- end of about -->
+            </div> 
+        </div> 
+    </div> 
 
 
-    <!-- Contact -->
     <div id="contact" class="form-2">
         <div class="container">
             <div class="row">
@@ -262,37 +278,22 @@
                             <li><i class="fas fa-envelope"></i>{{ contact_us.email }}</li>
                         </ul>
                         <h3>Bizni Ijtimoiy Tarmoqdan Kuzating</h3>
-
                         <span class="fa-stack">
-                            <a href="{{ contact_us.facebook }}">
-                                <span class="hexagon"></span>
-                                <i class="fab fa-facebook-f fa-stack-1x"></i>
-                            </a>
+                            <a href="{{ contact_us.facebook }}"><span class="hexagon"></span><i class="fab fa-facebook-f fa-stack-1x"></i></a>
                         </span>
                         <span class="fa-stack">
-                            <a href="{{ contact_us.twitter }}">
-                                <span class="hexagon"></span>
-                                <i class="fab fa-twitter fa-stack-1x"></i>
-                            </a>
+                            <a href="{{ contact_us.twitter }}"><span class="hexagon"></span><i class="fab fa-twitter fa-stack-1x"></i></a>
                         </span>
                         <span class="fa-stack">
-                            <a href="{{ contact_us.instagram }}">
-                                <span class="hexagon"></span>
-                                <i class="fab fa-instagram fa-stack-1x"></i>
-                            </a>
+                            <a href="{{ contact_us.instagram }}"><span class="hexagon"></span><i class="fab fa-instagram fa-stack-1x"></i></a>
                         </span>
                         <span class="fa-stack">
-                            <a href="{{ contact_us.telegram }}">
-                                <span class="hexagon"></span>
-                                <i class="fab fa-telegram fa-stack-1x"></i>
-                            </a>
+                            <a href="{{ contact_us.telegram }}"><span class="hexagon"></span><i class="fab fa-telegram fa-stack-1x"></i></a>
                         </span>
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
+                    </div> 
+                </div> 
                 
                 <div class="col-lg-6">
-                    
-                    <!-- Contact Form -->
                     <form id="contactForm" data-toggle="validator" data-focus="false" method="post">
                         {% csrf_token %}
                         <div class="form-group">
@@ -310,7 +311,6 @@
                             <label class="label-control" for="cmessage">Fikr qoldiring</label>
                             <div class="help-block with-errors"></div>
                         </div>
-                        
                         <div class="form-group">
                             <button type="submit" class="form-control-submit-button">SUBMIT MESSAGE</button>
                         </div>
@@ -318,18 +318,13 @@
                             <div id="cmsgSubmit" class="h3 text-center hidden"></div>
                         </div>
                     </form>
-                    <!-- end of contact form -->
-
-                </div> <!-- end of col -->
-                
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of form-2 -->
-    <!-- end of contact -->
+                </div> 
+            </div> 
+        </div> 
+    </div> 
 
 {% endblock content %}
 
 {% block scripts %}
-<!-- JavaScript faylni ulash -->
 <script src="{% static 'js/counter.js' %}"></script>
 {% endblock scripts %}

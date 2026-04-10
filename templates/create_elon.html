@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Yangi E'lon Yaratish{% endblock title %}
+
+{% block content %}
+<style>
+    /* 1. Asosiy fon va markazlash */
+    .edit-profile-section {
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* To'q va professional fon */
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 20px;
+    }
+
+    /* 2. Glassmorphism effekti (Oyna kabi karta) */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05); /* Yarim shaffof oq */
+        backdrop-filter: blur(20px); /* Orqani xira qilish */
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        padding: 45px;
+        width: 100%;
+        max-width: 650px; /* Kattaroq forma */
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        color: white;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .form-title {
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #fff;
+        margin-top: 10px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* 3. Inputlar dizayni */
+    .form-group label {
+        font-size: 0.95rem;
+        margin-bottom: 10px;
+        color: #91eaff; /* Aria rangiga yaqin */
+        display: block;
+        font-weight: 500;
+    }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 12px !important;
+        padding: 14px 18px !important;
+        color: white !important;
+        transition: 0.3s all;
+        width: 100%;
+    }
+
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-color: #00d2ff !important; /* Fokusda firuza rang */
+        box-shadow: 0 0 15px rgba(0, 210, 255, 0.3) !important;
+        outline: none;
+    }
+
+    /* Rasm yuklash (File input) uchun maxsus */
+    input[type="file"] {
+        color: rgba(255, 255, 255, 0.6) !important;
+        cursor: pointer;
+    }
+
+    /* 4. Tugma dizayni (Yaltiroq gradient) */
+    .btn-save {
+        background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+        border: none;
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-top: 25px;
+        transition: 0.3s;
+        box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+        cursor: pointer;
+        font-size: 1.1rem;
+    }
+
+    .btn-save:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 25px rgba(0, 210, 255, 0.5);
+        filter: brightness(1.1);
+    }
+
+    /* Placeholder rangi */
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.3);
+    }
+</style>
+
+<div class="edit-profile-section">
+    <div class="glass-card">
+        <div class="form-header">
+            <i class="fas fa-bullhorn fa-3x" style="color: #00d2ff;"></i>
+            <h2 class="form-title">Yangi E'lon</h2>
+            <p class="text-white-50">Mahalla ahli uchun muhim xabar qoldiring</p>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group mb-4">
+                <label><i class="fas fa-heading mr-1"></i> E'lon sarlavhasi</label>
+                <input type="text" name="sarlavha" class="form-control" placeholder="Masalan: Mahallamizda hashar o'tkaziladi" required>
+            </div>
+            
+            <div class="form-group mb-4">
+                <label><i class="fas fa-align-left mr-1"></i> E'lon matni (Tafsilotlar)</label>
+                <textarea name="matn" class="form-control" rows="6" placeholder="Barcha tafsilotlarni bu yerda batafsil yozing..." required></textarea>
+            </div>
+            
+            <div class="form-group mb-4">
+                <label><i class="fas fa-camera mr-1"></i> Rasm yuklash (Ixtiyoriy)</label>
+                <input type="file" name="rasm" class="form-control" accept="image/*">
+            </div>
+            
+            <button type="submit" class="btn btn-save">
+                <i class="fas fa-check-circle mr-1"></i> E'lonni chop etish
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

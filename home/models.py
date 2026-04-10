@@ -17,7 +17,7 @@ class BaseModel(models.Model):
 
 
 
-class UserRegistration(BaseModel, models.Model):
+class UserRegistration(BaseModel):
     # Jins uchun tanlovlar
     GENDER_CHOICES = [
         ('erkak', 'Erkak'),
@@ -94,6 +94,40 @@ class Home(BaseModel):
           if not self.slug:
                self.slug = slugify(self.sarlavha)
           super().save(*args, **kwargs)
+
+
+
+class Elon(BaseModel):
+    muallif = models.ForeignKey(UserRegistration, on_delete=models.CASCADE)
+    sarlavha = models.CharField(max_length=255)
+    matn = RichTextUploadingField()
+    rasm = models.ImageField(upload_to='elonlar/', null=True, blank=True)
+
+    def __str__(self):
+        return self.sarlavha
+
+class Sorovnoma(BaseModel):
+    muallif = models.ForeignKey(UserRegistration, on_delete=models.CASCADE)
+    savol = models.CharField(max_length=255)
+    variant_a = models.CharField(max_length=100)
+    variant_b = models.CharField(max_length=100)
+    # Qo'shimcha variantlar qo'shish mumkin
+
+    def __str__(self):
+        return self.savol
+    
+
+
+class Ovoz(models.Model):
+    user = models.ForeignKey(UserRegistration, on_delete=models.CASCADE)
+    sorovnoma = models.ForeignKey(Sorovnoma, on_delete=models.CASCADE, related_name='ovozlar')
+    tanlov = models.CharField(max_length=10) # 'A' yoki 'B' variant
+
+    class Meta:
+        unique_together = ('user', 'sorovnoma') # Bir kishi bir marta ovoz berishi uchun
+
+    def __str__(self):
+        return f"{self.user.ism} - {self.sorovnoma.savol} ({self.tanlov})"
 
 
 

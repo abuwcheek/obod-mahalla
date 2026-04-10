@@ -144,6 +144,75 @@ strong {
 	font: 500 0.8125rem/1.125rem "Montserrat", sans-serif;
 }
 
+
+
+/* Select maydonini to'g'rilash */
+select.form-control {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    padding: 12px !important;
+    height: auto !important;
+    -webkit-appearance: none; /* Safari va Chrome uchun standart ko'rinishni o'chirish */
+    -moz-appearance: none;    /* Firefox uchun */
+    appearance: none;         /* Standart ko'rinishni o'chirish */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 15px center !important;
+    cursor: pointer;
+}
+
+/* Ro'yxat ochilgandagi variantlar (Options) */
+select.form-control option {
+    background-color: #1a2a6c !important; /* Fonni to'q ko'k (gradientingga mos) qilish */
+    color: white !important;
+    padding: 15px !important;
+}
+
+/* Fokus bo'lganda (bosilganda) */
+select.form-control:focus {
+    outline: none !important;
+    border-color: #fdbb2d !important;
+    box-shadow: 0 0 10px rgba(253, 187, 45, 0.4) !important;
+}
+
+/* Form-group ichidagi elementlar bir-biriga minmasligi uchun */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px !important;
+}
+
+/* Tugmani majburan pastga surish */
+.btn-save {
+    margin-top: 40px !important;
+    clear: both;
+}
+
+
+
+.info-icon {
+	width: 52px;
+	height: 52px;
+	background: #e0f4ee;
+	border-radius: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.65rem;
+	color: #0f9b7e;           /* Quyuroq va aniqroq rang */
+	flex-shrink: 0;
+	box-shadow: 0 4px 10px rgba(15, 155, 126, 0.15);
+}
+
+/* Telefon icon */
+.info-row:nth-child(2) .info-icon {
+    background: #e6f6f0;
+    color: #14bf98;
+}
+
+
+
 .btn-solid-reg {
 	display: inline-block;
 	padding: 1.1875rem 1.875rem 1.1875rem 1.875rem;

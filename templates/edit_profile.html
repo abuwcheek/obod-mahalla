@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Asosiy fon va konteyner */
+    .edit-profile-section {
+        background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); /* Jonli fon */
+        min-height: 100vh;
+        padding: 50px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 40px;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        color: white;
+    }
+
+    .form-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    /* Inputlarni chiroyli qilish */
+    .form-group label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #e0e0e0;
+    }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+        border-radius: 10px !important;
+        padding: 12px 15px !important;
+        transition: 0.3s;
+    }
+
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-color: #fdbb2d !important;
+        box-shadow: 0 0 10px rgba(253, 187, 45, 0.3) !important;
+    }
+
+    /* Eslatmalar (Help Text) */
+    .custom-help-text {
+        font-size: 0.85rem;
+        margin-top: 5px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background: rgba(255, 0, 0, 0.1);
+        border-left: 3px solid #ff4d4d;
+        color: #ffcccc !important;
+    }
+
+    /* Saqlash tugmasi */
+    .btn-save {
+        background: linear-gradient(45deg, #1de9b6, #00bfa5);
+        border: none;
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 600;
+        color: white;
+        text-transform: uppercase;
+        margin-top: 20px;
+        transition: 0.3s;
+    }
+
+    .btn-save:hover {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+        box-shadow: 0 5px 15px rgba(29, 233, 182, 0.4);
+    }
+
+    /* Rasm yuklash qismi */
+    input[type="file"] {
+        color: #ccc;
+    }
+</style>
+
+<div class="edit-profile-section">
+    <div class="glass-card">
+        <h2 class="form-title" style="color: powderblue;">Profilni tahrirlash</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group mb-4">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    
+                    {% if field.help_text %}
+                        <div class="custom-help-text">
+                            <i class="fas fa-info-circle mr-1"></i> {{ field.help_text }}
+                        </div>
+                    {% endif %}
+                    
+                    {% if field.errors %}
+                        <div class="text-danger small mt-1">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn btn-save">
+                <i class="fas fa-check-circle mr-2"></i> O'zgarishlarni saqlash
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Yangi So'rovnoma Yaratish{% endblock title %}
+
+{% block content %}
+<style>
+    /* 1. Fon va Umumiy Konteyner */
+    .poll-create-section {
+        background: radial-gradient(circle at top right, #1e3c72, #2a5298, #1a1a2e); /* Chuqur ko'k gradient */
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+    }
+
+    /* 2. Glassmorphism Karta */
+    .poll-card {
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 30px;
+        padding: 50px;
+        width: 100%;
+        max-width: 550px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        color: white;
+    }
+
+    .poll-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .poll-title {
+        font-weight: 900;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        background: linear-gradient(to right, #00d2ff, #3a7bd5); /* Aria firuza rangi */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-top: 15px;
+    }
+
+    /* 3. Inputlar uchun "Smart" dizayn */
+    .form-group label {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+        color: #00d2ff;
+        display: block;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .poll-input {
+        background: rgba(0, 0, 0, 0.2) !important;
+        border: 2px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 15px !important;
+        padding: 15px 20px !important;
+        color: white !important;
+        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        width: 100%;
+    }
+
+    .poll-input:focus {
+        background: rgba(0, 0, 0, 0.4) !important;
+        border-color: #00d2ff !important;
+        box-shadow: 0 0 20px rgba(0, 210, 255, 0.2) !important;
+        transform: scale(1.02);
+        outline: none;
+    }
+
+    /* 4. Variantlar uchun maxsus belgi */
+    .variant-group {
+        position: relative;
+    }
+
+    .variant-label-icon {
+        position: absolute;
+        right: 15px;
+        top: 45px;
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* 5. Tugma (Neon Glow effekti bilan) */
+    .btn-create-poll {
+        background: linear-gradient(45deg, #00d2ff, #00c6ff);
+        border: none;
+        width: 100%;
+        padding: 18px;
+        border-radius: 15px;
+        color: white;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 30px;
+        transition: 0.5s;
+        box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        cursor: pointer;
+    }
+
+    .btn-create-poll:hover {
+        box-shadow: 0 0 30px rgba(0, 210, 255, 0.7);
+        filter: brightness(1.2);
+        transform: translateY(-5px);
+    }
+
+    .poll-input::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+    }
+</style>
+
+<div class="poll-create-section">
+    <div class="poll-card">
+        <div class="poll-header">
+            <div class="icon-box mb-2">
+                <i class="fas fa-chart-pie fa-3x" style="color: #00d2ff;"></i>
+            </div>
+            <h2 class="poll-title">So'rovnoma Yaratish</h2>
+            <p class="text-muted small">Mahalla aholisining ovozini to'plang</p>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group mb-4">
+                <label><i class="fas fa-question-circle mr-2"></i> Asosiy savol</label>
+                <input type="text" name="savol" class="poll-input" placeholder="Masalan: Sport maydonchasi qurilsinmi?" required>
+            </div>
+            
+            <div class="form-group mb-4 variant-group">
+                <label><i class="fas fa-check mr-2"></i> Variant A</label>
+                <input type="text" name="variant_a" class="poll-input" placeholder="Ha, qo'shilaman" required>
+                <i class="fas fa-dot-circle variant-label-icon"></i>
+            </div>
+            
+            <div class="form-group mb-4 variant-group">
+                <label><i class="fas fa-times mr-2"></i> Variant B</label>
+                <input type="text" name="variant_b" class="poll-input" placeholder="Yo'q, qarshiman" required>
+                <i class="fas fa-dot-circle variant-label-icon"></i>
+            </div>
+            
+            <button type="submit" class="btn-create-poll">
+                <i class="fas fa-plus-circle mr-2"></i> So'rovnomani ishga tushirish
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock content %}
