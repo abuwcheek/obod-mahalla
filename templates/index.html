@@ -43,7 +43,7 @@
                             {% if item.rasm %}
                                 <img src="{{ item.rasm.url }}" alt="{{ item.sarlavha }}" style="width: 100%; height: 100%; object-fit: cover;">
                             {% else %}
-                                <span style="color: #999; font-style: italic;">Rasm mavjud emas</span>
+                                <img src="{% static 'images/project-2.jpg' %}" alt="Default" style="width: 100%; height: 100%; object-fit: cover;">
                             {% endif %}
                         </div>
 
@@ -189,63 +189,90 @@
             </div> 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="button-group filters-button-group">
-                        <a class="button is-checked" data-filter="*"><span>SHOW ALL</span></a>
-                    </div> 
-                    <div class="grid">
-                        {% for all in all_news %}
-                        <div class="element-item development">
-                            <a class="popup-with-move-anim" href="#project-{{ forloop.counter }}">
-                                <div class="element-item-overlay"><span>{{ all.sarlavha }}</span></div>
-                                {% if all.image %}
-                                    <img style="width: 300px; height: 270px;" src="{{ all.image.url }}" alt="alternative">
-                                {% else %}
-                                    <img style="width: 300px; height: 270px;" src="{% static 'images/project-2.jpg' %}" alt="alternative">
-                                {% endif %}
-                            </a>
+                    <!-- Carousel kontayneri -->
+                    <div class="swiper" id="newsCarousel" style="max-width: 100%;">
+                        <div class="swiper-wrapper">
+                            {% for all in all_news %}
+                            <div class="swiper-slide" style="display: flex; justify-content: center; align-items: center;">
+                                <div style="width: 100%; max-width: 500px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                    <div style="position: relative; height: 350px; overflow: hidden; background-color: #eee;">
+                                        {% if all.image %}
+                                            <img src="{{ all.image.url }}" alt="{{ all.sarlavha }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                        {% else %}
+                                            <img src="{% static 'images/project-2.jpg' %}" alt="alternative" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                        {% endif %}
+                                    </div>
+                                    <div style="padding: 1.5rem;">
+                                        <h4 style="margin-bottom: 1rem; font-size: 1.1rem; color: #333;">{{ all.sarlavha }}</h4>
+                                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem; line-height: 1.5;">{{ all.text|striptags|slice:":150" }}...</p>
+                                        <button type="button" class="btn btn-info" style="background: #14bf98; color: #fff; border: none; padding: 0.5rem 1.5rem; border-radius: 5px; cursor: pointer; width: 100%; transition: 0.3s;" data-toggle="modal" data-target="#detailsModal{{ forloop.counter }}">
+                                            Batafsil
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-                    </div> 
+                        <!-- Carousel tugmalari -->
+                        <div class="swiper-button-prev" style="color: #14bf98; top: 50%; left: 10px;"></div>
+                        <div class="swiper-button-next" style="color: #14bf98; top: 50%; right: 10px;"></div>
+                        <!-- Pagination -->
+                        <div class="swiper-pagination" style="bottom: 10px;"></div>
+                    </div>
                 </div> 
             </div> 
         </div> 
     </div> 
 
+    <!-- Modal dialoglari -->
     {% for all in all_news %}
-    <div id="project-{{ forloop.counter }}" class="lightbox-basic zoom-anim-dialog mfp-hide">
-        <div class="row">
-            <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
-            <div class="col-lg-8">
-                {% if all.image %}
-                    <img class="img-fluid" src="{{ all.image.url }}" alt="alternative">
-                {% else %}
-                    <img class="img-fluid" src="{% static 'images/project-3.jpg' %}" alt="alternative">
-                {% endif %}
-            </div> 
-            <div class="col-lg-4">
-                <h3>{{ all.sarlavha }}</h3>
-                <hr class="line-heading">
-                <p>{{ all.text|striptags }}</p>
-                <a class="btn-outline-reg mfp-close as-button" href="#projects">BACK</a> 
-            </div> 
-        </div> 
-    </div> 
+    <div class="modal fade" id="detailsModal{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel{{ forloop.counter }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel{{ forloop.counter }}">{{ all.sarlavha }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div style="height: 250px; overflow: hidden; border-radius: 8px; background-color: #eee;">
+                                {% if all.image %}
+                                    <img src="{{ all.image.url }}" alt="{{ all.sarlavha }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                {% else %}
+                                    <img src="{% static 'images/project-3.jpg' %}" alt="alternative" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <p style="line-height: 1.8; color: #555;">{{ all.text|striptags }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background: #999; border: none; padding: 0.5rem 1.5rem; border-radius: 5px; cursor: pointer; color: #fff;">Yopish</button>
+                </div>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 
     <div id="about" class="counter">
         <div class="container">
             <div class="row">
-                {% for about in solo_news %}
+                {% if solo_news %}
                 <div class="col-lg-5 col-xl-6">
                     <div class="image-container">
-                        <img class="img-fluid" src="{{ about.image.url }}" alt="alternative">
+                        <img class="img-fluid" src="{{ solo_news.image.url }}" alt="alternative">
                     </div> 
                 </div> 
                 <div class="col-lg-7 col-xl-6">
                     <div class="text-container">
                         <div class="section-title"></div>
-                        <h2>{{ about.sarlavha }} </h2>
-                        <p>{{ about.text|striptags|slice:"299" }}</p>
+                        <h2>{{ solo_news.sarlavha }} </h2>
+                        <p>{{ solo_news.text|striptags|slice:"299" }}</p>
                         
                         <div id="counter">
                             <div class="cell">
@@ -259,7 +286,7 @@
                         </div>
                     </div>      
                 </div> 
-                {% endfor %}
+                {% endif %}
             </div> 
         </div> 
     </div> 
@@ -294,7 +321,16 @@
                 </div> 
                 
                 <div class="col-lg-6">
-                    <form id="contactForm" data-toggle="validator" data-focus="false" method="post">
+                    {% if messages %}
+                    <div class="alert-box" style="margin-bottom: 1rem;">
+                        {% for message in messages %}
+                        <div style="padding: 1rem 1.25rem; border-radius: 10px; margin-bottom: 0.75rem; color: #0f5132; background: #d1e7dd; border: 1px solid #badbcc;">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <form id="djangoContactForm" method="post" action="{% url 'contact_submit' %}">
                         {% csrf_token %}
                         <div class="form-group">
                             <input type="text" class="form-control-input" id="cname" name="full_name" required>
@@ -327,4 +363,158 @@
 
 {% block scripts %}
 <script src="{% static 'js/counter.js' %}"></script>
+
+<!-- Swiper Carousel Initialization -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const swiper = new Swiper('#newsCarousel', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            centeredSlides: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                dynamicBullets: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                },
+                1024: {
+                    slidesPerView: 1,
+                    spaceBetween: 40,
+                },
+            }
+        });
+    });
+</script>
+
+<style>
+    .swiper {
+        width: 100%;
+        height: auto;
+        padding: 20px 0;
+    }
+
+    .swiper-slide {
+        background-color: transparent;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        background-color: rgba(20, 191, 152, 0.2);
+        padding: 20px;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+    }
+
+    .swiper-button-prev:hover,
+    .swiper-button-next:hover {
+        background-color: rgba(20, 191, 152, 0.4);
+    }
+
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 18px;
+        color: #14bf98;
+    }
+
+    .swiper-pagination-bullet {
+        background-color: #14bf98;
+        opacity: 0.5;
+    }
+
+    .swiper-pagination-bullet-active {
+        opacity: 1;
+    }
+
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: 0.5rem 1.5rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .btn-info {
+        color: #fff;
+        background-color: #14bf98;
+        border-color: #14bf98;
+    }
+
+    .btn-info:hover {
+        background-color: #0aa878;
+        border-color: #0aa878;
+    }
+
+    .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #e9ecef;
+        background-color: #f8f9fa;
+    }
+
+    .modal-title {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .close {
+        color: #999;
+        opacity: 0.7;
+    }
+
+    .close:hover {
+        opacity: 1;
+        color: #000;
+    }
+
+    .btn-secondary {
+        background-color: #999;
+        border-color: #999;
+        color: #fff;
+    }
+
+    .btn-secondary:hover {
+        background-color: #777;
+        border-color: #777;
+    }
+</style>
 {% endblock scripts %}

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, register, profile, logout_profile, login_request, edit_profile, create_elon, create_sorovnoma, vote
+from .views import home, register, profile, logout_profile, login_request, edit_profile, create_elon, create_sorovnoma, vote, contact_submit
 
 
 urlpatterns = [
@@ -14,4 +14,5 @@ urlpatterns = [
     path('elon/create/', create_elon, name='create_elon'),
     path('sorovnoma/create/', create_sorovnoma, name='create_sorovnoma'),
     path('vote/<int:poll_id>/', vote, name='vote'),
+    path('contact/submit/', contact_submit, name='contact_submit'),
 ]

@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
+from django.urls import reverse
 from .forms import UserProfileEditForm
-from .models import Home, UserRegistration, Elon, Sorovnoma, Ovoz
+from .models import Home, UserRegistration, Elon, Sorovnoma, Ovoz, ContactMessage, ContactUs
 
 
 
@@ -17,16 +18,52 @@ def home(request):
     user_email = request.session.get('registered_email')
     current_user = UserRegistration.objects.filter(email=user_email).first() if user_email else None
 
-    all_news = Home.objects.filter(is_active=True).order_by('-created_at').first()
-    solo_news = all_news[0]
+    # Har bir so'rovnomaga ovoz berish ma'lumotlarini qo'shish
+    for poll in active_polls:
+        # Umumiy ovozlar sonini hisoblash
+        total_votes = Ovoz.objects.filter(sorovnoma=poll).count()
+        a_votes = Ovoz.objects.filter(sorovnoma=poll, tanlov='A').count()
+        b_votes = Ovoz.objects.filter(sorovnoma=poll, tanlov='B').count()
+        
+        # Foizni hisoblash
+        if total_votes > 0:
+            poll.a_percent = round((a_votes / total_votes) * 100)
+            poll.b_percent = round((b_votes / total_votes) * 100)
+        else:
+            poll.a_percent = 0
+            poll.b_percent = 0
+        
+        poll.a_count = a_votes
+        poll.b_count = b_votes
+        poll.total_votes = total_votes
+        
+        # Foydalanuvchi ovoz berganligi va tanlovi
+        if current_user:
+            user_vote = Ovoz.objects.filter(sorovnoma=poll, user=current_user).first()
+            if user_vote:
+                poll.user_voted = True
+                poll.user_choice = user_vote.tanlov
+            else:
+                poll.user_voted = False
+                poll.user_choice = None
+        else:
+            poll.user_voted = False
+            poll.user_choice = None
+
+    old_news = Home.objects.filter(is_active=True).order_by('-created_at').first()
+    all_news = Home.objects.filter(is_active=True).order_by('-created_at')
+    solo_news = Home.objects.filter(is_active=True, is_published=True).order_by('-created_at').first()
     featured_news = Home.objects.filter(is_active=True, is_featured=True).order_by('-created_at').first()
+    contact_us = ContactUs.objects.first()
     context = {
         'elonlar': elonlar_list,
         'active_polls': active_polls,
 
-        'old_news': all_news,
+        'old_news': old_news,
+        'all_news': all_news,
         'solo_news': solo_news,
         'featured_news': featured_news,
+        'contact_us': contact_us,
     }
     return render(request, 'index.html', context)
 
@@ -214,3 +251,29 @@ def logout_profile(request):
     request.session.flush() # Barcha session ma'lumotlarini tozalash
     messages.success(request, "Tizimdan chiqdingiz.")
     return redirect('home')
+
+
+def contact_submit(request):
+    """ Contact formini database'ga saqlash """
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        message = request.POST.get('message', '').strip()
+
+        if not all([full_name, email, message]):
+            messages.error(request, "Barcha maydonlarni to'ldiring.")
+            return redirect(reverse('home') + '#contact')
+
+        try:
+            ContactMessage.objects.create(
+                full_name=full_name,
+                email=email,
+                message=message
+            )
+            messages.success(request, "✓ Xabaringiz yuborildi. Tez orada javob keladi!")
+        except Exception as e:
+            messages.error(request, "Xatolik yuz berdi. Iltimos qayta urinib ko'ring.")
+
+        return redirect(reverse('home') + '#contact')
+    
+    return redirect(reverse('home') + '#contact')

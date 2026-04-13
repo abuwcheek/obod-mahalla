@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import Home, ContactUs, UserRegistration, UserOTP, Elon, Sorovnoma, Ovoz
+from .models import Home, ContactUs, UserRegistration, UserOTP, Elon, Sorovnoma, Ovoz, ContactMessage
 
 
 
@@ -141,6 +141,49 @@ class SorovnomaAdmin(admin.ModelAdmin):
 class OvozAdmin(admin.ModelAdmin):
     list_display = ('user', 'sorovnoma', 'tanlov')
     list_filter = ('tanlov', 'sorovnoma')
+
+
+# --- 8. CONTACT MESSAGE ADMIN ---
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'email', 'is_read', 'preview_message', 'created_at')
+    list_display_links = ('full_name', 'email')
+    list_editable = ('is_read',)
+    search_fields = ('full_name', 'email', 'message')
+    list_filter = ('created_at', 'is_read')
+    readonly_fields = ('full_name', 'email', 'created_at', 'formatted_message')
+    fields = ('full_name', 'email', 'created_at', 'is_read', 'formatted_message')
+    actions = ('mark_as_read', 'mark_as_unread')
+    list_per_page = 20
+    
+    def preview_message(self, obj):
+        preview = obj.message[:50] + '...' if len(obj.message) > 50 else obj.message
+        return preview
+    preview_message.short_description = 'Xabar Preview'
+    
+    def formatted_message(self, obj):
+        return format_html(
+            '<div style="background-color: #222; color: #f7f7f7; padding: 15px; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; border: 1px solid #444;">{}</div>',
+            obj.message
+        )
+    formatted_message.short_description = 'Xabar Matni'
+    
+    def mark_as_read(self, request, queryset):
+        updated = queryset.update(is_read=True)
+        self.message_user(request, f"{updated} ta xabar o'qilgan deb belgilandi.")
+    mark_as_read.short_description = 'Tanlangan xabarlarni o\'qilgan deb belgilash'
+
+    def mark_as_unread(self, request, queryset):
+        updated = queryset.update(is_read=False)
+        self.message_user(request, f"{updated} ta xabar o'qilmagan deb belgilandi.")
+    mark_as_unread.short_description = 'Tanlangan xabarlarni o\'qilmagan deb belgilash'
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        return True
+
 
 # Admin panel sozlamalari
 admin.site.site_header = "Obod Mahalla | Admin Panel"
